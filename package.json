@@ -1,0 +1,30 @@
+{
+  "name": "conforma-error",
+  "version": "0.0.1",
+  "description": "Error Manager for Conforma",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xelaz/conforma-error.git"
+  },
+  "keywords": [
+    "error",
+    "conforma"
+  ],
+  "author": "xelaz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xelaz/conforma-error/issues"
+  },
+  "homepage": "https://github.com/xelaz/conforma-error#readme",
+  "dependencies": {
+    "debug": "^2.2.0"
+  },
+  "devDependencies": {
+    "conforma": "^1.13.2",
+    "mocha": "^2.3.4"
+  }
+}
