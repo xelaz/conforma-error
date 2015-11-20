@@ -22,7 +22,7 @@ function escapeHtml(string) {
  */
 var ConformaError = function(options) {
   options = options || {};
-  this.__ = options.__ || function(v) {return v};
+  this.__ = (options.__ && typeof options.__ === 'function' && options.__) || function(v) {return v};
 
   this.openTag = options.openTag || '<span class="help-block">';
   this.separator = options.separator || '<br>';
@@ -119,6 +119,8 @@ ConformaError.prototype.addConformaError = function(err, namespace) {
  * @return ConformaError
  */
 ConformaError.prototype.addError = function(path, message, options) {
+  var _this = this;
+
   if(!path || !message) {
     return this;
   }
@@ -132,7 +134,7 @@ ConformaError.prototype.addError = function(path, message, options) {
       var result = match && match.replace(/\:/g, '');
       switch(result) {
         case 'path':
-          result =  this.__(path);
+          result =  _this.__(path);
           break;
         case 'value':
           result = options.value || '';
