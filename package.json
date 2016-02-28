@@ -1,10 +1,11 @@
 {
   "name": "conforma-error",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Error Manager for Conforma",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/mocha/bin/mocha",
+    "test:watch": "npm run test -- --watch"
   },
   "repository": {
     "type": "git",

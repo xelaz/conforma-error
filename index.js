@@ -55,7 +55,7 @@ ConformaError.prototype.addMongoError = function(err, namespace) {
       m = err.err.match(/index\:(.*[^\s](\$(.*)\_+\d))(\s\s)/);
 
       if(m && m[3]) {
-        _self.addError((namespace ? namespace + '.' : '') + m[3], 'duplicate key');
+        _self.addError((namespace ? namespace + '.' : '') + m[3], 'duplicate.key');
       }
       return this;
     }
@@ -81,7 +81,7 @@ ConformaError.prototype.addMongoError = function(err, namespace) {
  * @return {ConformaError}
  */
 ConformaError.prototype.addConformaError = function(err, namespace) {
-  if(!err || err.name !== 'ConformaError') {
+  if(!err || (err.name !== 'ConformaError' && err.name !== 'ConformaValidationError')) {
     return this;
   }
 
@@ -89,7 +89,7 @@ ConformaError.prototype.addConformaError = function(err, namespace) {
 
   var _self = this;
 
-  err = err.errors || [];
+  err = err.errors || [err];
 
   Object.keys(err).forEach(function(key) {
     var tmpError = err[key];
@@ -116,7 +116,7 @@ ConformaError.prototype.addConformaError = function(err, namespace) {
  * @param {String} [options.min]
  * @param {String} [options.max]
  *
- * @return ConformaError
+ * @return {ConformaError}
  */
 ConformaError.prototype.addError = function(path, message, options) {
   var _this = this;
@@ -136,23 +136,28 @@ ConformaError.prototype.addError = function(path, message, options) {
         case 'path':
           result =  _this.__(path);
           break;
+
         case 'value':
           result = options.value || '';
           break;
+
         case 'min':
           result = options.min || '';
           break;
+
         case 'max':
           result = options.max || '';
           break;
+
         default:
           result = '';
       }
+
       return result;
     })
     .replace(/\s{2,}/, ' ').replace("''", '').replace('""', '');
 
-  var messageHash = path+message;
+  var messageHash = path+':'+message;
 
   if(this.duplicate.indexOf(messageHash) < 0) {
     this.errors[path].push(message);
