@@ -185,12 +185,13 @@ ConformaError.prototype.getErrors = function() {
 /**
  *
  * @param {String} key
- * @param {*}  [custom]
+ * @param {String|*}  [customTrue]
+ * @param {String|*}  [customFalse]
  *
  * @returns {*}
  */
-ConformaError.prototype.hasError = function(key, custom) {
-  return typeof this.errors[key] !== 'undefined' ? (custom || true) : false;
+ConformaError.prototype.hasError = function(key, customTrue, customFalse) {
+  return typeof this.errors[key] !== 'undefined' ? (typeof customTrue !== 'undefined' && customTrue || true) : (typeof customFalse !== 'undefined' && customFalse || false);
 };
 
 /**
