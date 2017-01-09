@@ -29,6 +29,7 @@ var ConformaError = function(options) {
   this.closeTag = options.closeTag || '</span>';
   this.openListTag = options.openListTag || '<ul>';
   this.closeListTag = options.closeListTag || '</ul>';
+  this.logger = options.logger && typeof options.logger === 'function' && options.logger || null;
 
   this.reset();
 };
@@ -82,6 +83,7 @@ ConformaError.prototype.addMongoError = function(err, namespace) {
  */
 ConformaError.prototype.addConformaError = function(err, namespace) {
   if(!err || (err.name !== 'ConformaError' && err.name !== 'ConformaValidationError')) {
+    this.log(err);
     return this;
   }
 
@@ -260,6 +262,19 @@ ConformaError.prototype.getHtmlError = function(path, openTag, separator, closeT
   closeTag = closeTag || this.closeTag;
 
   return errors.length ? (openTag + errors.join(separator) + closeTag) : '';
+};
+
+/**
+ * @returns {ConformaError}
+ */
+ConformaError.prototype.log = function() {
+  if(!this.logger) {
+    return;
+  }
+
+  this.logger.apply(this.logger, [].slice.call(arguments));
+
+  return this;
 };
 
 
